@@ -1,0 +1,34 @@
+{
+  "name": "client-templates",
+  "version": "0.0.0",
+  "author": "Carrot Creative <dev@carrotcreative.com>",
+  "description": "roots extension that precompiles templates for use on the client side",
+  "license": "MIT",
+  "keywords": ["roots-extension", "precompile", "client-side", "templates"],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/carrot/roots-client-templates.git"
+  },
+  "main": "index.js",
+  "dependencies": {
+    "coffee-script": "1.x",
+    "lodash": "2.x",
+    "when": "2.x"
+  },
+  "devDependencies": {
+    "mocha": "*",
+    "should": "*",
+    "glob": "*",
+    "rimraf": "*",
+    "roots": "3.x"
+  },
+  "peerDependencies": {
+    "roots": "3.x"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "engines": {
+    "node": ">=0.10.0"
+  }
+}
