@@ -30,18 +30,20 @@ The example provided in the installation section is the minimum required to get 
 
 ### Options
 
+##### name
+This will be the name your templates are exposed as. If you are using commonjs or amd, it will be the name of the module, if neither, it will be attached to `window` as this name. Default is `templates`.
+
 ##### path
 A [minimatch](https://github.com/isaacs/minimatch)-compatible string pointing to one or more files to be precompiled.
 
 ##### out
-Where you want to output your templates to in your `public` folder (or whatever you have set `output` to in the roots settings).
+Where you want to output your templates to in your `public` folder (or whatever you have set `output` to in the roots settings). Default is `js/templates.js`
 
 ##### extract
 If `true`, precompiled templates are only precompiled, and do not also get passed through the normal compile pipeline. Default is `false`.
 
 ##### concat
 If `true`, the precompiled templates are concatenated into a single file with helpers at the top, wrapped with a [umd] wrapper, and each template is exported on an object with they key being the name of the file (minus extension). If false, each template is exported with a umd wrapper as it's own file as expected, and the helper functions (required to render templates) are exported alone in a file with the name decided by what you pass as `out`. Default is `true`.
-
 
 ### License & Contributing
 
