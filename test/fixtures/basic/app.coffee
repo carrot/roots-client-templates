@@ -7,7 +7,7 @@ tpl3 = new ClientTemplates(path: "tpl3/*", out: "tpl3/3.js", concat: false)
 module.exports =
   ignores: ["**/_*", "**/.DS_Store"]
 
-  extensions: [tpl1, tpl2, tpl3]
+  extensions: [tpl3, tpl1, tpl2]
 
   jade:
     pretty: true

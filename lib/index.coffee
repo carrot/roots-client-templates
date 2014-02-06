@@ -30,6 +30,7 @@ class ClientCompile
 
   compile_hooks: ->
     after_file: after_hook.bind(@)
+    write: write_hook.bind(@)
 
   category_hooks: ->
     after: after_category.bind(@)
@@ -37,7 +38,6 @@ class ClientCompile
   # @api private
   
   after_hook = (ctx) ->
-    # something going on with this getting called 4x
     if @category != ctx.category then return
 
     # last valid adapter is assumed to be your precompile target
@@ -61,13 +61,20 @@ class ClientCompile
       # - TODO: split by slash and add ad a proper object
       @templates[adapter.name].all.push(name: tpl_name, content: out)
 
-      # if individual files wanted for templates, wrap, replace
-      # content, and make sure the output is .js
-      if not @concat
-        ctx.content = umd(tpl_name, out)
-        _.first(ctx.adapters).output = 'js'
+      # if individual files wanted for templates, wrap & replace content
+      if not @concat then ctx.content = umd(tpl_name, out)
 
       return @write
+
+  write_hook = (ctx) ->
+    # if out of category, don't write anything
+    if @category != ctx.category then return false
+
+    # if concat is true, write normal path. if false, write with a js extension
+    if @concat
+      { path: ctx.roots.config.out(ctx.path, _.last(ctx.adapters).output), content: ctx.content }
+    else
+      { path: ctx.roots.config.out(ctx.path, 'js'), content: ctx.content }
   
   after_category = (ctx, category) ->
     if @category != category then return

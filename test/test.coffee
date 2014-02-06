@@ -26,8 +26,8 @@ before (done) ->
     tasks.push nodefn.call(run, "cd #{p}; npm install")
   W.all(tasks, -> done())
 
-# after ->
-#   rimraf.sync(public_dir) for public_dir in glob.sync('test/fixtures/**/public')
+after ->
+  rimraf.sync(public_dir) for public_dir in glob.sync('test/fixtures/**/public')
 
 # tests
 
@@ -41,4 +41,29 @@ describe 'client templates', ->
       .on('error', done)
       .on('done', done)
 
-  it 'should work'
+  it 'should precompile a basic template', ->
+    p = path.join(@public, 'tpl1/1.js')
+    should.file_exist(p)
+    should.have_content(p)
+
+  it 'should compile a template to both client and static if extract is false', ->
+    p1 = path.join(@public, 'tpl2/2.js')
+    should.file_exist(p1)
+    should.have_content(p1)
+
+    p2 = path.join(@public, 'tpl2/template2.html')
+    should.file_exist(p2)
+    should.have_content(p2)
+
+  it 'should compile templates separately if concat is false', ->
+    p1 = path.join(@public, 'tpl3/3.js')
+    should.file_exist(p1)
+    should.have_content(p1)
+
+    p2 = path.join(@public, 'tpl3/template3.js')
+    should.file_exist(p2)
+    should.have_content(p2)
+
+    p3 = path.join(@public, 'tpl3/template4.js')
+    should.file_exist(p3)
+    should.have_content(p3)
