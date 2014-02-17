@@ -10,13 +10,18 @@ uuid      = require 'node-uuid'
 class ClientCompile
 
   constructor: (opts) ->
-    @extract = if opts.extract == false then false else true
+    opts = _.defaults opts,
+      out:      'js/templates.js'
+      name:     'templates'
+      concat:   true
+      extract:  true
+      category: "precompiled-#{uuid.v1()}" # uuid - multiple instances, no conflict
+
+    {@extract, @concat, @category, @name, @out} = opts
+
     @pattern = opts.path || throw new Error('you must provide a path')
-    @concat = if opts.concat == false then false else true
-    @category = "precompiled-#{uuid.v1()}" # uuid - multiple instances, no conflict
-    @name = opts.name || 'templates'
+
     @templates = {}
-    @out = opts.out || 'js/templates.js'
 
     # if you are concatenating, you can choose extract or not
     # if you are not concatenating, you must write the file
@@ -36,7 +41,7 @@ class ClientCompile
     after: after_category.bind(@)
 
   # @api private
-  
+
   after_hook = (ctx) ->
     if @category != ctx.category then return
 
@@ -75,7 +80,7 @@ class ClientCompile
       { path: ctx.roots.config.out(ctx.path, _.last(ctx.adapters).output), content: ctx.content }
     else
       { path: ctx.roots.config.out(ctx.path, 'js'), content: ctx.content }
-  
+
   after_category = (ctx, category) ->
     if @category != category then return
 
