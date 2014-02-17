@@ -41,7 +41,7 @@ class ClientCompile
     after: after_category.bind(@)
 
   # @api private
-  
+
   after_hook = (ctx) ->
     if @category != ctx.category then return
 
@@ -80,7 +80,7 @@ class ClientCompile
       { path: ctx.roots.config.out(ctx.path, _.last(ctx.adapters).output), content: ctx.content }
     else
       { path: ctx.roots.config.out(ctx.path, 'js'), content: ctx.content }
-  
+
   after_category = (ctx, category) ->
     if @category != category then return
 
