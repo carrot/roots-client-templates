@@ -6,6 +6,7 @@ nodefn    = require 'when/node/function'
 minimatch = require 'minimatch'
 umd       = require 'umd'
 uuid      = require 'node-uuid'
+UglifyJS  = require("uglify-js");
 
 class ClientCompile
 
@@ -15,9 +16,10 @@ class ClientCompile
       name:     'templates'
       concat:   true
       extract:  true
+      compress: false
       category: "precompiled-#{uuid.v1()}" # uuid - multiple instances, no conflict
 
-    {@extract, @concat, @category, @name, @out} = opts
+    {@extract, @concat, @category, @name, @out, @compress} = opts
 
     @pattern = opts.path || throw new Error('you must provide a path')
 
@@ -92,12 +94,14 @@ class ClientCompile
       # add templates to the exported object if necessary
       if @concat
         output += "return {"
-        output += "\"#{tpl.name}\": #{tpl.content}," for tpl in category.all # TODO: uglify?
+        output += "\"#{tpl.name}\": #{tpl.content}," for tpl in category.all
         output = output.slice(0,-1)
         output += "};"
 
       # add umd wrapper
       output = umd(@name, output)
+
+      if @compress then output = UglifyJS.minify(output, fromString: true).code
 
       # write the file
       output_path = path.join(ctx.roots.config.output_path(), @out)
