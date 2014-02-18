@@ -7,6 +7,7 @@ minimatch = require 'minimatch'
 umd       = require 'umd'
 uuid      = require 'node-uuid'
 UglifyJS  = require("uglify-js");
+mkdirp    = require 'mkdirp'
 
 class ClientCompile
 
@@ -105,7 +106,11 @@ class ClientCompile
 
       # write the file
       output_path = path.join(ctx.roots.config.output_path(), @out)
-      tasks.push(nodefn.call(fs.writeFile, output_path, output))
+
+      tasks.push(
+        nodefn.call(mkdirp, path.dirname(output_path)).then ->
+          nodefn.call(fs.writeFile, output_path, output)
+      )
 
     W.all(tasks)
 

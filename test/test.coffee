@@ -75,3 +75,7 @@ describe 'client templates', ->
     p3 = path.join(@public, 'tpl3/template4.js')
     should.file_exist(p3)
     should.have_content(p3)
+
+  it 'should compile templates with no output specified', ->
+    p = path.join(@public, 'js/templates.js')
+    should.file_exist(p)
