@@ -53,17 +53,13 @@ class ClientCompile
 
     # client-compile the file and add it to the store
     adapter.compileClient(ctx.content).then (out) =>
-
       # naming the template key
+
       # - remove roots root
       tpl_name = ctx.path.replace(ctx.roots.root,'')
-      # - cut the first folder name in the pattern
-      tpl_name = tpl_name.replace(path.dirname(@pattern).split(path.sep)[0],'')
-      # - remove any leading slashes left over
-      tpl_name = tpl_name.replace(new RegExp("^\\#{path.sep}+"), '')
-      # - cut the file extension(s)
-      tpl_name = _.last(tpl_name.split(path.sep)).split('.')[0]
-      # - TODO: split by slash and add ad a proper object
+      # - cut the file extension(s) and remove leading /
+      tpl_name = tpl_name.split("/").slice(1).join("/").split('.')[0]
+
       @templates[adapter.name].all.push(name: tpl_name, content: out)
 
       # if individual files wanted for templates, wrap & replace content

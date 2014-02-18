@@ -17,6 +17,9 @@ should.file_exist = (path) ->
 should.have_content = (path) ->
   fs.readFileSync(path).length.should.be.above(1)
 
+should.contain = (path, content) ->
+  fs.readFileSync(path, 'utf8').indexOf(content).should.not.equal(-1)
+
 before (done) ->
   tasks = []
   for d in glob.sync("#{_path}/*/package.json")
@@ -40,6 +43,11 @@ describe 'client templates', ->
     project.compile()
       .on('error', done)
       .on('done', done)
+
+  it 'should compile templates under their local path key', ->
+    p = path.join(@public, 'tpl1/1.js')
+    should.contain(p, 'tpl1/template1')
+    should.contain(p, 'tpl1/cat/dog')
 
   it 'should precompile a basic template', ->
     p = path.join(@public, 'tpl1/1.js')
