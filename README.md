@@ -12,13 +12,17 @@ Roots client templates allow templates that compile to html to be precompiled in
 - make sure you are in your roots project directory
 - `npm install client-templates --save`
 - modify your `app.coffee` file to include the extension, as such
-  
+
   ```coffee
   ClientTemplates = require('client-templates')
 
   module.exports =
-    extensions: [new ClientTemplates(path: "templates/*.jade", out: "js/templates.js")]
-    
+    extensions: [new ClientTemplates(
+      base: "templates/", // required
+      pattern: "*.jade", // defaults to **
+      out: "js/templates.js" // defaults to js/templates.js
+    )]
+
     # everything else...
   ```
 

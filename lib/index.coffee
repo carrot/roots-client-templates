@@ -12,17 +12,19 @@ mkdirp    = require 'mkdirp'
 class ClientCompile
 
   constructor: (opts) ->
-    opts = _.defaults opts,
+    @opts = _.defaults opts,
       out:      'js/templates.js'
       name:     'templates'
+      pattern:  '**'
       concat:   true
       extract:  true
       compress: false
       category: "precompiled-#{uuid.v1()}" # uuid - multiple instances, no conflict
 
-    {@extract, @concat, @category, @name, @out, @compress} = opts
+    {@extract, @concat, @category, @name, @out, @compress} = @opts
 
-    @pattern = opts.path || throw new Error('you must provide a path')
+    if !@opts.base? then throw new Error('you must provide a base template path')
+    @pattern = @opts.base + @opts.pattern
 
     @templates = {}
 
@@ -60,8 +62,12 @@ class ClientCompile
 
       # - remove roots root
       tpl_name = ctx.path.replace(ctx.roots.root,'')
+
+      # - remove templates root
+      tpl_name = tpl_name.split(@opts.base)[1]
+
       # - cut the file extension(s) and remove leading /
-      tpl_name = tpl_name.split("/").slice(1).join("/").split('.')[0]
+      tpl_name = tpl_name.split('.')[0]
 
       @templates[adapter.name].all.push(name: tpl_name, content: out)
 
