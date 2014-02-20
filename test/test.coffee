@@ -34,6 +34,11 @@ after ->
 
 # tests
 
+describe 'errors', ->
+  it 'should throw an error when no base is defined', ->
+    @path = path.join(_path, 'error')
+    project = ( -> new Roots(@path) ).should.throw("path does not exist")
+
 describe 'client templates', ->
 
   before (done) ->
@@ -46,8 +51,8 @@ describe 'client templates', ->
 
   it 'should compile templates under their local path key', ->
     p = path.join(@public, 'tpl1/1.js')
-    should.contain(p, 'tpl1/template1')
-    should.contain(p, 'tpl1/cat/dog')
+    should.contain(p, 'template1')
+    should.contain(p, 'cat/dog')
 
   it 'should precompile a basic template', ->
     p = path.join(@public, 'tpl1/1.js')
