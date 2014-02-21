@@ -17,7 +17,7 @@ Roots client templates allow templates that compile to html to be precompiled in
   ClientTemplates = require('client-templates')
 
   module.exports =
-    extensions: [new ClientTemplates(
+    extensions: [ClientTemplates(
       base: "templates/", // required
       pattern: "*.jade", // defaults to **
       out: "js/templates.js" // defaults to js/templates.js

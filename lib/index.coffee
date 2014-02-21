@@ -9,9 +9,9 @@ uuid      = require 'node-uuid'
 UglifyJS  = require("uglify-js");
 mkdirp    = require 'mkdirp'
 
-class ClientCompile
+module.exports = (opts) -> class ClientCompile
 
-  constructor: (opts) ->
+  constructor: (roots) ->
     @opts = _.defaults opts,
       out:      'js/templates.js'
       name:     'templates'
@@ -61,7 +61,7 @@ class ClientCompile
       # naming the template key
 
       # - remove roots root
-      tpl_name = ctx.path.replace(ctx.roots.root,'')
+      tpl_name = ctx.file.path.replace(ctx.roots.root,'')
 
       # - remove templates root
       tpl_name = tpl_name.split(@opts.base)[1]
@@ -82,9 +82,9 @@ class ClientCompile
 
     # if concat is true, write normal path. if false, write with a js extension
     if @concat
-      { path: ctx.roots.config.out(ctx.path, _.last(ctx.adapters).output), content: ctx.content }
+      { path: ctx.roots.config.out(ctx.file.path, _.last(ctx.adapters).output), content: ctx.content }
     else
-      { path: ctx.roots.config.out(ctx.path, 'js'), content: ctx.content }
+      { path: ctx.roots.config.out(ctx.file.path, 'js'), content: ctx.content }
 
   after_category = (ctx, category) ->
     if @category != category then return
@@ -119,5 +119,3 @@ class ClientCompile
       )
 
     W.all(tasks)
-
-module.exports = ClientCompile
