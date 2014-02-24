@@ -77,14 +77,14 @@ module.exports = (opts) -> class ClientCompile
       return @write
 
   write_hook = (ctx) ->
-    # if out of category, don't write anything
-    if @category != ctx.category then return false
+    # if out of category, write as usual
+    if @category != ctx.category then return true
 
-    # if concat is true, write normal path. if false, write with a js extension
-    if @concat
-      { path: ctx.roots.config.out(ctx.file.path, _.last(ctx.adapters).output), content: ctx.content }
-    else
-      { path: ctx.roots.config.out(ctx.file.path, 'js'), content: ctx.content }
+    # if concat is true, write as usual
+    if @concat then return true
+
+    # if concat is not true, write with `.js` at the end
+    return { extension: 'js' }
 
   after_category = (ctx, category) ->
     if @category != category then return
