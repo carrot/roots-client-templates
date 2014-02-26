@@ -24,7 +24,7 @@ module.exports = (opts) ->
       {@extract, @concat, @category, @name, @out, @compress} = @opts
 
       if !@opts.base? then throw new Error('you must provide a base template path')
-      @pattern = @opts.base + @opts.pattern
+      @pattern = path.join(@opts.base, @opts.pattern)
 
       @templates = {}
 
