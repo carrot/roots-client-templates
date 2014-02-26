@@ -20,6 +20,12 @@ should.have_content = (path) ->
 should.contain = (path, content) ->
   fs.readFileSync(path, 'utf8').indexOf(content).should.not.equal(-1)
 
+compile_fixture = (fixture_name, done) ->
+  @path = path.join(_path, fixture_name)
+  @public = path.join(@path, 'public')
+  project = new Roots(@path)
+  project.compile().on('error', done).on('done', done)
+
 before (done) ->
   tasks = []
   for d in glob.sync("#{_path}/*/package.json")
@@ -35,51 +41,58 @@ after ->
 # tests
 
 describe 'errors', ->
+
   it 'should throw an error when no base is defined', ->
     @path = path.join(_path, 'error')
-    project = ( -> new Roots(@path) ).should.throw("path does not exist")
+    project = (-> new Roots(@path)).should.throw("path does not exist")
 
-describe 'client templates', ->
+describe 'basics', ->
 
-  before (done) ->
-    @path = path.join(_path, 'basic')
-    @public = path.join(@path, 'public')
-    project = new Roots(@path)
-    project.compile()
-      .on('error', done)
-      .on('done', done)
-
-  it 'should compile templates under their local path key', ->
-    p = path.join(@public, 'tpl1/1.js')
-    should.contain(p, 'template1')
-    should.contain(p, 'cat/dog')
+  before (done) -> compile_fixture.call(@, 'basic', done)
 
   it 'should precompile a basic template', ->
-    p = path.join(@public, 'tpl1/1.js')
+    p = path.join(@public, 'tpl/all.js')
     should.file_exist(p)
     should.have_content(p)
 
+  it 'should compile templates under their local path key', ->
+    p = path.join(@public, 'tpl/all.js')
+    should.contain(p, 'template1')
+    should.contain(p, 'cat/dog')
+
+describe 'extract', ->
+
+  before (done) -> compile_fixture.call(@, 'extract', done)
+
   it 'should compile a template to both client and static if extract is false', ->
-    p1 = path.join(@public, 'tpl2/2.js')
+    p1 = path.join(@public, 'tpl/all.js')
     should.file_exist(p1)
     should.have_content(p1)
 
-    p2 = path.join(@public, 'tpl2/template2.html')
+    p2 = path.join(@public, 'tpl/template2.html')
     should.file_exist(p2)
     should.have_content(p2)
+
+describe 'concat', ->
+
+  before (done) -> compile_fixture.call(@, 'concat', done)
 
   it 'should compile templates separately if concat is false', ->
-    p1 = path.join(@public, 'tpl3/3.js')
+    p1 = path.join(@public, 'tpl/helper.js')
     should.file_exist(p1)
     should.have_content(p1)
 
-    p2 = path.join(@public, 'tpl3/template3.js')
+    p2 = path.join(@public, 'tpl/template3.js')
     should.file_exist(p2)
     should.have_content(p2)
 
-    p3 = path.join(@public, 'tpl3/template4.js')
+    p3 = path.join(@public, 'tpl/template4.js')
     should.file_exist(p3)
     should.have_content(p3)
+
+describe 'no output', ->
+
+  before (done) -> compile_fixture.call(@, 'no-out', done)
 
   it 'should compile templates with no output specified', ->
     p = path.join(@public, 'js/templates.js')
