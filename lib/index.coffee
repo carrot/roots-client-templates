@@ -5,8 +5,7 @@ W         = require 'when'
 nodefn    = require 'when/node/function'
 minimatch = require 'minimatch'
 umd       = require 'umd'
-uuid      = require 'node-uuid'
-UglifyJS  = require("uglify-js");
+UglifyJS  = require 'uglify-js'
 mkdirp    = require 'mkdirp'
 
 module.exports = (opts) ->
@@ -20,7 +19,7 @@ module.exports = (opts) ->
         concat:   true
         extract:  true
         compress: false
-        category: "precompiled-#{uuid.v1()}" # uuid - multiple instances, no conflict
+        category: "precompiled"
 
       {@extract, @concat, @category, @name, @out, @compress} = @opts
 
