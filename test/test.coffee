@@ -55,6 +55,11 @@ describe 'basics', ->
     should.file_exist(p)
     should.have_content(p)
 
+  it 'should still compile other templates normally', ->
+    p = path.join(@public, 'index.html')
+    should.file_exist(p)
+    should.have_content(p)
+
   it 'should compile templates under their local path key', ->
     p = path.join(@public, 'tpl/all.js')
     should.contain(p, 'template1')
