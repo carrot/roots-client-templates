@@ -39,6 +39,7 @@ module.exports = (opts) ->
       detect: (f) => minimatch(f.relative, @pattern)
 
     compile_hooks: ->
+      before_pass: before_hook.bind(@)
       after_file: after_hook.bind(@)
       write: write_hook.bind(@)
 
@@ -46,6 +47,11 @@ module.exports = (opts) ->
       after: after_category.bind(@)
 
     # @api private
+    
+    # before the last pass, save out the original content
+    before_hook = (ctx) ->
+      if @category == ctx.file.category && ctx.index == ctx.file.adapters.length
+        ctx.file.original_content = ctx.file.content
 
     after_hook = (ctx) ->
       if @category != ctx.category then return
@@ -57,7 +63,7 @@ module.exports = (opts) ->
       @templates[adapter.name] ?= { adapter: adapter, all: [] }
 
       # client-compile the file and add it to the store
-      adapter.compileClient(ctx.content).then (out) =>
+      adapter.compileClient(ctx.original_content).then (out) =>
         # naming the template key
 
         # - remove roots root
