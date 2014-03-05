@@ -65,6 +65,10 @@ describe 'basics', ->
     should.contain(p, 'template1')
     should.contain(p, 'cat/dog')
 
+  it 'not compile templates that would break a normal jade compile', ->
+    p = path.join(@public, 'tpl/all.js')
+    should.contain(p, 'template2')
+
 describe 'extract', ->
 
   before (done) -> compile_fixture.call(@, 'extract', done)
