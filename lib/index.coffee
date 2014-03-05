@@ -52,6 +52,11 @@ module.exports = (opts) ->
     before_hook = (ctx) ->
       if @category == ctx.file.category && ctx.index == ctx.file.adapters.length
         ctx.file.original_content = ctx.file.content
+        # we client-compile the file by ourselves anyway, 
+        # so letting roots compile it would be useless
+        # since we either replace ctx.content if not @concat
+        # or we don't write the file at all otherwise
+        ctx.content = ""
 
     after_hook = (ctx) ->
       if @category != ctx.category then return
