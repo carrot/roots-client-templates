@@ -33,7 +33,6 @@ module.exports = (opts) ->
       @write = if @concat then !@extract else true
 
     fs: ->
-      category: @category
       extract: @extract
       ordered: false
       detect: (f) => minimatch(f.relative, @pattern)
@@ -50,7 +49,7 @@ module.exports = (opts) ->
     
     # before the last pass, save out the original content
     before_hook = (ctx) ->
-      if @category == ctx.file.category && ctx.index == ctx.file.adapters.length
+      if ctx.index == ctx.file.adapters.length
         ctx.file.original_content = ctx.file.content
         # we client-compile the file by ourselves anyway, 
         # so letting roots compile it would be useless
@@ -59,8 +58,6 @@ module.exports = (opts) ->
         ctx.content = ""
 
     after_hook = (ctx) ->
-      if @category != ctx.category then return
-
       # last valid adapter is assumed to be your precompile target
       adapter = _.find(_.clone(ctx.adapters).reverse(), (a) -> a.name)
 
@@ -88,9 +85,6 @@ module.exports = (opts) ->
         return @write
 
     write_hook = (ctx) ->
-      # if out of category, write as usual
-      if @category != ctx.category then return true
-
       # if concat is true, prevent write
       if @concat then return false
 
@@ -98,8 +92,6 @@ module.exports = (opts) ->
       return { extension: 'js' }
 
     after_category = (ctx, category) ->
-      if @category != category then return
-
       tasks = []
 
       # for each category in templates
