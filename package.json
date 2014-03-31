@@ -14,22 +14,19 @@
     "type": "git",
     "url": "https://github.com/carrot/roots-client-templates.git"
   },
-  "main": "index.js",
+  "main": "lib",
   "dependencies": {
-    "coffee-script": "1.7.x",
     "lodash": "2.x",
     "when": "3.x",
     "minimatch": "0.2.x",
     "umd": "2.x",
     "uglify-js": "2.4.x",
-    "mkdirp": "0.3.x",
     "roots-util": "0.0.4"
   },
   "devDependencies": {
+    "coffee-script": "1.7.x",
     "mocha": "*",
     "should": "*",
-    "glob": "*",
-    "rimraf": "*",
     "roots": "3.x"
   },
   "peerDependencies": {

@@ -2,11 +2,9 @@ path      = require 'path'
 fs        = require 'fs'
 _         = require 'lodash'
 W         = require 'when'
-nodefn    = require 'when/node'
 minimatch = require 'minimatch'
 umd       = require 'umd'
 UglifyJS  = require 'uglify-js'
-mkdirp    = require 'mkdirp'
 RootsUtil = require 'roots-util'
 
 module.exports = (opts) ->
