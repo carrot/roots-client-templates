@@ -18,11 +18,12 @@
   "dependencies": {
     "coffee-script": "1.7.x",
     "lodash": "2.x",
-    "when": "2.x",
+    "when": "3.x",
     "minimatch": "0.2.x",
     "umd": "2.x",
     "uglify-js": "2.4.x",
-    "mkdirp": "0.3.x"
+    "mkdirp": "0.3.x",
+    "roots-util": "0.0.2"
   },
   "devDependencies": {
     "mocha": "*",

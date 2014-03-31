@@ -2,16 +2,19 @@ path      = require 'path'
 fs        = require 'fs'
 _         = require 'lodash'
 W         = require 'when'
-nodefn    = require 'when/node/function'
+nodefn    = require 'when/node'
 minimatch = require 'minimatch'
 umd       = require 'umd'
 UglifyJS  = require 'uglify-js'
 mkdirp    = require 'mkdirp'
+RootsUtil = require 'roots-util'
 
 module.exports = (opts) ->
   class ClientCompile
 
     constructor: (roots) ->
+      @util = new RootsUtil(roots)
+
       @opts = _.defaults opts,
         out:      'js/templates.js'
         name:     'templates'
@@ -113,12 +116,6 @@ module.exports = (opts) ->
 
         if @compress then output = UglifyJS.minify(output, fromString: true).code
 
-        # write the file
-        output_path = path.join(ctx.roots.config.output_path(), @out)
-
-        tasks.push(
-          nodefn.call(mkdirp, path.dirname(output_path)).then ->
-            nodefn.call(fs.writeFile, output_path, output)
-        )
+        tasks.push(@util.write(@out, output))
 
       W.all(tasks)

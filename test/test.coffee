@@ -33,7 +33,7 @@ before (done) ->
     if fs.existsSync(path.join(p, 'node_modules')) then continue
     console.log "installing deps for #{d}"
     tasks.push nodefn.call(run, "cd #{p}; npm install")
-  W.all(tasks, -> done())
+  W.all(tasks).then(-> done())
 
 after ->
   rimraf.sync(public_dir) for public_dir in glob.sync('test/fixtures/**/public')
