@@ -1,42 +1,23 @@
 path   = require 'path'
 fs     = require 'fs'
 should = require 'should'
-glob   = require 'glob'
-rimraf = require 'rimraf'
 Roots  = require 'roots'
-W      = require 'when'
-nodefn = require 'when/node/function'
+RootsUtil = require 'roots-util'
+
 _path  = path.join(__dirname, 'fixtures')
-run = require('child_process').exec
+h = new RootsUtil.Helpers(base: _path)
 
-# setup, teardown, and utils
-
-should.file_exist = (path) ->
-  fs.existsSync(path).should.be.ok
-
-should.have_content = (path) ->
-  fs.readFileSync(path).length.should.be.above(1)
-
-should.contain = (path, content) ->
-  fs.readFileSync(path, 'utf8').indexOf(content).should.not.equal(-1)
+# utils
 
 compile_fixture = (fixture_name, done) ->
-  @path = path.join(_path, fixture_name)
-  @public = path.join(@path, 'public')
-  project = new Roots(@path)
-  project.compile().on('error', done).on('done', done)
+  @public = path.join(fixture_name, 'public')
+  h.project.compile(Roots, fixture_name, done)
 
 before (done) ->
-  tasks = []
-  for d in glob.sync("#{_path}/*/package.json")
-    p = path.dirname(d)
-    if fs.existsSync(path.join(p, 'node_modules')) then continue
-    console.log "installing deps for #{d}"
-    tasks.push nodefn.call(run, "cd #{p}; npm install")
-  W.all(tasks).then(-> done())
+  h.project.install_dependencies('*', done)
 
 after ->
-  rimraf.sync(public_dir) for public_dir in glob.sync('test/fixtures/**/public')
+  h.project.remove_folders('**/public')
 
 # tests
 
@@ -52,22 +33,22 @@ describe 'basics', ->
 
   it 'should precompile a basic template', ->
     p = path.join(@public, 'tpl/all.js')
-    should.file_exist(p)
-    should.have_content(p)
+    h.file.exists(p).should.be.ok
+    h.file.has_content(p).should.be.ok
 
   it 'should still compile other templates normally', ->
     p = path.join(@public, 'index.html')
-    should.file_exist(p)
-    should.have_content(p)
+    h.file.exists(p).should.be.ok
+    h.file.has_content(p).should.be.ok
 
   it 'should compile templates under their local path key', ->
     p = path.join(@public, 'tpl/all.js')
-    should.contain(p, 'template1')
-    should.contain(p, 'cat/dog')
+    h.file.contains(p, 'template1').should.be.ok
+    h.file.contains(p, 'cat/dog').should.be.ok
 
   it 'not compile templates that would break a normal jade compile', ->
     p = path.join(@public, 'tpl/all.js')
-    should.contain(p, 'template2')
+    h.file.contains(p, 'template2').should.be.ok
 
 describe 'extract', ->
 
@@ -75,12 +56,12 @@ describe 'extract', ->
 
   it 'should compile a template to both client and static if extract is false', ->
     p1 = path.join(@public, 'tpl/all.js')
-    should.file_exist(p1)
-    should.have_content(p1)
+    h.file.exists(p1).should.be.ok
+    h.file.has_content(p1).should.be.ok
 
     p2 = path.join(@public, 'tpl/template2.html')
-    should.file_exist(p2)
-    should.have_content(p2)
+    h.file.exists(p2).should.be.ok
+    h.file.has_content(p2).should.be.ok
 
 describe 'concat', ->
 
@@ -88,16 +69,16 @@ describe 'concat', ->
 
   it 'should compile templates separately if concat is false', ->
     p1 = path.join(@public, 'tpl/helper.js')
-    should.file_exist(p1)
-    should.have_content(p1)
+    h.file.exists(p1).should.be.ok
+    h.file.has_content(p1).should.be.ok
 
     p2 = path.join(@public, 'tpl/template3.js')
-    should.file_exist(p2)
-    should.have_content(p2)
+    h.file.exists(p2).should.be.ok
+    h.file.has_content(p2).should.be.ok
 
     p3 = path.join(@public, 'tpl/template4.js')
-    should.file_exist(p3)
-    should.have_content(p3)
+    h.file.exists(p3).should.be.ok
+    h.file.has_content(p3).should.be.ok
 
 describe 'no output', ->
 
@@ -105,4 +86,4 @@ describe 'no output', ->
 
   it 'should compile templates with no output specified', ->
     p = path.join(@public, 'js/templates.js')
-    should.file_exist(p)
+    h.file.exists(p).should.be.ok
