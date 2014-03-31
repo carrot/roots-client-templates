@@ -23,7 +23,7 @@
     "umd": "2.x",
     "uglify-js": "2.4.x",
     "mkdirp": "0.3.x",
-    "roots-util": "0.0.2"
+    "roots-util": "0.0.3"
   },
   "devDependencies": {
     "mocha": "*",
