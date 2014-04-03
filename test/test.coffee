@@ -44,7 +44,7 @@ describe 'basics', ->
   it 'should compile templates under their local path key', ->
     p = path.join(@public, 'tpl/all.js')
     h.file.contains(p, 'template1').should.be.ok
-    h.file.contains(p, 'cat/dog').should.be.ok
+    h.file.contains(p, path.normalize('cat/dog')).should.be.ok
 
   it 'not compile templates that would break a normal jade compile', ->
     p = path.join(@public, 'tpl/all.js')

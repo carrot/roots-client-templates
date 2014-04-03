@@ -14,7 +14,7 @@ module.exports = (opts) ->
       @util = new RootsUtil(roots)
 
       @opts = _.defaults opts,
-        out:      'js/templates.js'
+        out:      path.normalize('js/templates.js')
         name:     'templates'
         pattern:  '**'
         concat:   true
@@ -25,6 +25,7 @@ module.exports = (opts) ->
       {@extract, @concat, @category, @name, @out, @compress} = @opts
 
       if !@opts.base? then throw new Error('you must provide a base template path')
+      @opts.base = path.normalize(@opts.base)
       @pattern = path.join(@opts.base, @opts.pattern)
 
       @templates = {}
