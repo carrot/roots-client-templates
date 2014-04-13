@@ -8,10 +8,9 @@ _path  = path.join(__dirname, 'fixtures')
 h = new RootsUtil.Helpers(base: _path)
 
 # utils
-
 compile_fixture = (fixture_name, done) ->
-  @public = path.join(fixture_name, 'public')
   h.project.compile(Roots, fixture_name, done)
+  return path.join(fixture_name, 'public')
 
 before (done) ->
   h.project.install_dependencies('*', done)
@@ -20,16 +19,13 @@ after ->
   h.project.remove_folders('**/public')
 
 # tests
-
 describe 'errors', ->
-
   it 'should throw an error when no base is defined', ->
     @path = path.join(_path, 'error')
     project = (-> new Roots(@path)).should.throw("path does not exist")
 
 describe 'basics', ->
-
-  before (done) -> compile_fixture.call(@, 'basic', done)
+  before (done) -> @public = compile_fixture('basic', done)
 
   it 'should precompile a basic template', ->
     p = path.join(@public, 'tpl/all.js')
@@ -51,8 +47,7 @@ describe 'basics', ->
     h.file.contains(p, 'template2').should.be.ok
 
 describe 'extract', ->
-
-  before (done) -> compile_fixture.call(@, 'extract', done)
+  before (done) -> @public = compile_fixture('extract', done)
 
   it 'should compile a template to both client and static if extract is false', ->
     p1 = path.join(@public, 'tpl/all.js')
@@ -64,8 +59,7 @@ describe 'extract', ->
     h.file.has_content(p2).should.be.ok
 
 describe 'concat', ->
-
-  before (done) -> compile_fixture.call(@, 'concat', done)
+  before (done) -> @public = compile_fixture('concat', done)
 
   it 'should compile templates separately if concat is false', ->
     p1 = path.join(@public, 'tpl/helper.js')
@@ -81,8 +75,7 @@ describe 'concat', ->
     h.file.has_content(p3).should.be.ok
 
 describe 'no output', ->
-
-  before (done) -> compile_fixture.call(@, 'no-out', done)
+  before (done) -> @public = compile_fixture('no-out', done)
 
   it 'should compile templates with no output specified', ->
     p = path.join(@public, 'js/templates.js')
