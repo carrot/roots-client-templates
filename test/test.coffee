@@ -29,7 +29,7 @@ describe 'errors', ->
 
 describe 'basics', ->
 
-  before (done) -> compile_fixture.call(@, 'basic', done)
+  before (done) -> compile_fixture.call(@, 'basic', -> done())
 
   it 'should precompile a basic template', ->
     p = path.join(@public, 'tpl/all.js')
@@ -52,7 +52,7 @@ describe 'basics', ->
 
 describe 'extract', ->
 
-  before (done) -> compile_fixture.call(@, 'extract', done)
+  before (done) -> compile_fixture.call(@, 'extract', -> done())
 
   it 'should compile a template to both client and static if extract is false', ->
     p1 = path.join(@public, 'tpl/all.js')
@@ -65,7 +65,7 @@ describe 'extract', ->
 
 describe 'concat', ->
 
-  before (done) -> compile_fixture.call(@, 'concat', done)
+  before (done) -> compile_fixture.call(@, 'concat', -> done())
 
   it 'should compile templates separately if concat is false', ->
     p1 = path.join(@public, 'tpl/helper.js')
@@ -82,7 +82,7 @@ describe 'concat', ->
 
 describe 'no output', ->
 
-  before (done) -> compile_fixture.call(@, 'no-out', done)
+  before (done) -> compile_fixture.call(@, 'no-out', -> done())
 
   it 'should compile templates with no output specified', ->
     p = path.join(@public, 'js/templates.js')
