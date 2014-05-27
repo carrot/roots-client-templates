@@ -1,7 +1,7 @@
 Roots Client Templates
 ======================
 
-[![npm](https://badge.fury.io/js/client-templates.png)](http://badge.fury.io/js/client-templates) [![tests](https://travis-ci.org/carrot/roots-client-templates.png?branch=master)](https://travis-ci.org/carrot/roots-client-templates) [![dependencies](https://david-dm.org/carrot/roots-client-templates.png?theme=shields.io)](https://david-dm.org/carrot/roots-client-templates)
+[![npm](http://img.shields.io/npm/v/client-templates.svg?style=flat)](https://badge.fury.io/js/client-templates) [![tests](http://img.shields.io/travis/carrot/roots-client-templates/master.svg?style=flat)](https://travis-ci.org/carrot/roots-client-templates) [![coverage](http://img.shields.io/coveralls/carrot/roots-client-templates.svg?style=flat)](https://coveralls.io/r/carrot/roots-client-templates) [![dependencies](http://img.shields.io/gemnasium/carrot/roots-client-templates.svg?style=flat)](https://gemnasium.com/carrot/roots-client-templates)
 
 Roots client templates allow templates that compile to html to be precompiled into javascript functions to be used on the client side.
 
