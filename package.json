@@ -26,7 +26,8 @@
   "devDependencies": {
     "coffee-script": "1.7.x",
     "mocha": "*",
-    "should": "*",
+    "chai": "*",
+    "chai-as-promised": "4.x",
     "roots": "3.x",
     "mocha-lcov-reporter": "0.0.1",
     "coffeelint": "1.*",

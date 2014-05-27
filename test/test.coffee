@@ -1,7 +1,6 @@
-path   = require 'path'
-fs     = require 'fs'
-should = require 'should'
-Roots  = require 'roots'
+path      = require 'path'
+fs        = require 'fs'
+Roots     = require 'roots'
 RootsUtil = require 'roots-util'
 
 _path  = path.join(__dirname, 'fixtures')
@@ -23,9 +22,10 @@ after ->
 
 describe 'errors', ->
 
-  it 'should throw an error when no base is defined', ->
+  it 'should throw an error when base path not passed', ->
     @path = path.join(_path, 'error')
-    project = (-> new Roots(@path)).should.throw("path does not exist")
+    project = new Roots(@path)
+    (-> project.compile()).should.throw()
 
 describe 'basics', ->
 
@@ -87,3 +87,11 @@ describe 'no output', ->
   it 'should compile templates with no output specified', ->
     p = path.join(@public, 'js/templates.js')
     h.file.exists(p).should.be.ok
+
+describe 'compress', ->
+  before (done) -> compile_fixture.call(@, 'compress', -> done())
+
+  it 'should compress templates if the option is passed', ->
+    p = path.join(@public, 'js/templates.js')
+    h.file.exists(p).should.be.ok
+    h.file.contains_match(p, '\n').should.not.be.ok
