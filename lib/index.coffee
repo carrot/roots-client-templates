@@ -24,7 +24,9 @@ module.exports = (opts) ->
 
       {@extract, @concat, @category, @name, @out, @compress} = @opts
 
-      if !@opts.base? then throw new Error('you must provide a base template path')
+      if !@opts.base?
+        throw new Error('you must provide a base template path')
+
       @opts.base = path.normalize(@opts.base)
       @pattern = path.join(@opts.base, @opts.pattern)
 
@@ -48,12 +50,12 @@ module.exports = (opts) ->
       after: after_category.bind(@)
 
     # @api private
-    
+
     # before the last pass, save out the original content
     before_hook = (ctx) ->
       if ctx.index == ctx.file.adapters.length
         ctx.file.original_content = ctx.file.content
-        # we client-compile the file by ourselves anyway, 
+        # we client-compile the file by ourselves anyway,
         # so letting roots compile it would be useless
         # since we either replace ctx.content if not @concat
         # or we don't write the file at all otherwise
@@ -113,7 +115,8 @@ module.exports = (opts) ->
         # add umd wrapper
         output = umd(@name, output)
 
-        if @compress then output = UglifyJS.minify(output, fromString: true).code
+        if @compress
+          output = UglifyJS.minify(output, fromString: true).code
 
         tasks.push(@util.write(@out, output))
 
