@@ -17,22 +17,22 @@
   "main": "lib",
   "dependencies": {
     "lodash": "2.x",
-    "when": "3.x",
-    "minimatch": "0.3.x",
-    "umd": "2.x",
+    "minimatch": "0.4.x",
+    "roots-util": "0.0.4",
     "uglify-js": "2.4.x",
-    "roots-util": "0.0.4"
+    "umd": "2.x",
+    "when": "3.x"
   },
   "devDependencies": {
-    "coffee-script": "1.7.x",
-    "mocha": "*",
-    "chai": "*",
+    "chai": "1.x",
     "chai-as-promised": "4.x",
-    "roots": "3.x",
+    "coffee-script": "1.7.x",
+    "coffeelint": "1.x",
+    "coveralls": "2.x",
+    "istanbul": "0.3.x",
+    "mocha": "1.x",
     "mocha-lcov-reporter": "0.0.1",
-    "coffeelint": "1.*",
-    "coveralls": "*",
-    "istanbul": "0.2.x"
+    "roots": "3.x"
   },
   "peerDependencies": {
     "roots": "3.x"
