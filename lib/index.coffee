@@ -69,7 +69,9 @@ module.exports = (opts) ->
       @templates[adapter.name] ?= { adapter: adapter, all: [] }
 
       # client-compile the file and add it to the store
-      adapter.compileClient(ctx.original_content).then (out) =>
+      adapter.compileClient(ctx.original_content, {
+        filename: ctx.file.path
+      }).then (out) =>
         # naming the template key
 
         # - remove roots root
