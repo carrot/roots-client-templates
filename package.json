@@ -26,7 +26,7 @@
   "devDependencies": {
     "chai": "1.x",
     "chai-as-promised": "4.x",
-    "coffee-script": "1.7.x",
+    "coffee-script": "1.8.x",
     "coffeelint": "1.x",
     "coveralls": "2.x",
     "istanbul": "0.3.x",
