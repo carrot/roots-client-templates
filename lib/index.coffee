@@ -110,7 +110,10 @@ module.exports = (opts) ->
         # add templates to the exported object if necessary
         if @concat
           output += "return {"
-          output += "\"#{tpl.name}\": #{tpl.content}," for tpl in category.all
+          for tpl in category.all
+            if tpl.name.indexOf('/') is 0
+              tpl.name = tpl.name.substring(tpl.name.indexOf('/')+1)
+            output += "\"#{tpl.name}\": #{tpl.content},"
           output = output.slice(0,-1)
           output += "};"
 
