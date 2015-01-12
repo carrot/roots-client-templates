@@ -83,10 +83,10 @@ module.exports = (opts) ->
         # - cut the file extension(s) and remove leading /
         tpl_name = tpl_name.split('.')[0]
 
-        @templates[adapter.name].all.push(name: tpl_name, content: out)
+        @templates[adapter.name].all.push(name: tpl_name, content: out.result)
 
         # if individual files wanted for templates, wrap & replace content
-        if not @concat then ctx.content = umd(tpl_name, out)
+        if not @concat then ctx.content = umd(tpl_name, out.result)
 
         return @write
 
