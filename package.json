@@ -1,6 +1,6 @@
 {
   "name": "client-templates",
-  "version": "0.1.3",
+  "version": "0.2.0",
   "author": "Carrot Creative <dev@carrotcreative.com>",
   "description": "roots extension that precompiles templates for use on the client side",
   "license": "MIT",
