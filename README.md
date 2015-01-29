@@ -32,6 +32,13 @@ This extension uses [accord](https://github.com/jenius/accord) for compilation a
 
 The example provided in the installation section is the minimum required to get things going. In this case it will look for a folder called `templates` at the root, and precompile any `.jade` file in that folder, outputting all the templates to `js/templates.js` in your public folder. Now let's look over the full range of available options.
 
+This extension also exposes a view helper function (`client_templates`) that when called will render the script into your templates automatically. Here's how it could be used in jade:
+
+```jade
+p here's my great view
+!= client_templates() //- outputs <script src='js/templates.js'></script>
+```
+
 ### Options
 
 ##### name

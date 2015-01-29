@@ -80,7 +80,7 @@ describe 'concat', ->
     h.file.exists(p3).should.be.ok
     h.file.has_content(p3).should.be.ok
 
-describe 'no output', ->
+describe 'no_output', ->
 
   before (done) -> compile_fixture.call(@, 'no-out', -> done())
 
@@ -95,3 +95,11 @@ describe 'compress', ->
     p = path.join(@public, 'js/templates.js')
     h.file.exists(p).should.be.ok
     h.file.contains_match(p, '\n').should.not.be.ok
+
+describe 'view_helper', ->
+  before (done) -> compile_fixture.call(@, 'view_helper', -> done())
+
+  it 'should output the correct path from the view helper', ->
+    p = path.join(@public, 'index.html')
+    h.file.exists(p).should.be.ok
+    h.file.contains(p, "<script src='tpl/all.js'></script>").should.be.ok

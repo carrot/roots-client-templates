@@ -14,7 +14,7 @@ module.exports = (opts) ->
       @util = new RootsUtil(roots)
 
       @opts = _.defaults opts,
-        out:      path.normalize('js/templates.js')
+        out:      'js/templates.js'
         name:     'templates'
         pattern:  '**'
         concat:   true
@@ -35,6 +35,10 @@ module.exports = (opts) ->
       # if you are concatenating, you can choose extract or not
       # if you are not concatenating, you must write the file
       @write = if @concat then !@extract else true
+
+      roots.config.locals ?= {}
+      roots.config.locals.client_templates = (prefix = '') =>
+        "<script src='#{prefix}#{@opts.out}'></script>"
 
     fs: ->
       extract: @extract
