@@ -24,7 +24,7 @@
     "when": "3.x"
   },
   "devDependencies": {
-    "chai": "2.x",
+    "chai": "3.x",
     "chai-as-promised": "5.x",
     "coffee-script": "1.9.x",
     "coffeelint": "1.x",
